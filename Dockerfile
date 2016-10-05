@@ -4,8 +4,8 @@ MAINTAINER Keitaro Inc <info@keitaro.info>
 
 ENV TERM=xterm
 ENV APP_DIR=/opt/redash
-ENV REDASH_VERSION=0.11.1.b2095
-ENV REDASH_RELEASE_URL=https://github.com/getredash/redash/releases/download/v${REDASH_VERSION}/redash.${REDASH_VERSION}.tar.gz
+ENV REDASH_VERSION=0.12.0.b2256
+ENV REDASH_RELEASE_URL=https://github.com/getredash/redash/releases/download/v0.12.0-rc/redash.${REDASH_VERSION}.tar.gz
 ENV REDASH_STATIC_ASSETS_PATH="../rd_ui/dist/"
 
 WORKDIR ${APP_DIR}
@@ -48,6 +48,10 @@ RUN curl -SL ${REDASH_RELEASE_URL} | tar -xz && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     chown -R redash /opt/redash
+
+# Add certbot
+RUN curl -o /usr/bin/certbot-auto "https://dl.eff.org/certbot-auto" && \
+    chmod a+x /usr/bin/certbot-auto
 
 # Set user and expose port
 USER redash
