@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM python:2
 
 MAINTAINER Keitaro Inc <info@keitaro.info>
 
@@ -39,6 +39,8 @@ RUN curl -SL ${REDASH_RELEASE_URL} | tar -xz && \
     pip install -U setuptools==23.1.0 && \
     pip install -r requirements_all_ds.txt && \
     pip install -r requirements.txt && \
+    pip install -U requests && \
+    pip install certbot && \
     sudo -u redash -H make deps && \
     rm -rf node_modules \
            rd_ui/node_modules \
@@ -48,10 +50,6 @@ RUN curl -SL ${REDASH_RELEASE_URL} | tar -xz && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     chown -R redash /opt/redash
-
-# Add certbot
-RUN curl -o /usr/bin/certbot-auto "https://dl.eff.org/certbot-auto" && \
-    chmod a+x /usr/bin/certbot-auto
 
 # Set user and expose port
 USER redash
